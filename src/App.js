@@ -1,12 +1,13 @@
 import React, { useState, Fragment } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Navbar from "./Component/Layout/Navbar";
+import Alert from "./Component/Layout/Alert";
+import Users from "./Component/User/Users";
+import User from "./Component/User/User";
+import Search from "./Component/User/Search";
+import About from "./Component/Pages/About";
 import axios from "axios";
-import Navbar from "./Layout/Navbar";
-import Alert from "./Layout/Alert";
-import Users from "./User/Users";
-import User from "./User/User";
-import Search from "./User/Search";
-import About from "./Pages/About";
+import GithubState from "./Context/Github/GithubState";
 import "./App.css";
 
 const App = () => {
@@ -65,6 +66,8 @@ const App = () => {
   };
 
   return (
+    <GithubState>
+
     <BrowserRouter>
       <div className="App">
         <Navbar />
@@ -81,30 +84,31 @@ const App = () => {
                     clearUsers={clearUsers}
                     showClear={users.length > 0 ? true : false}
                     setAlert={showAlert}
-                  />
+                    />
                   <Users loading={loading} users={users} />
                 </Fragment>
               )}
-            />
+              />
             <Route exact path="/about" component={About} />
             <Route
               exact
               path="/user/:login"
               render={props => (
                 <User
-                  {...props}
-                  getUser={getUser}
-                  getRepos={getRepos}
-                  user={user}
-                  repos={repos}
-                  loading={loading}
+                {...props}
+                getUser={getUser}
+                getRepos={getRepos}
+                user={user}
+                repos={repos}
+                loading={loading}
                 />
               )}
-            />
+              />
           </Switch>
         </div>
       </div>
     </BrowserRouter>
+  </GithubState>
   );
 };
 
